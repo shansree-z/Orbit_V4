@@ -1,3 +1,4 @@
+
 # 🚀 New-Hire Onboarding Concierge
 
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
@@ -14,168 +15,144 @@ A professional AI-powered employee onboarding management system with orchestrato
 
 ## ✨ Features
 
-- 🧠 **Orchestrator Agent** – Rule-based workflow coordinator with 8 sequential tasks
-- 📊 **Real-time Tracking** – Live dashboard updates (2–5 sec auto-refresh)
-- 👥 **Dual Roles** – Separate HR and Manager interfaces
-- 🔁 **Retry Management** – Managers can retry failed tasks (max 3 attempts)
-- 📝 **Full Logging** – All actions tracked with history
-- 🎨 **Enterprise UI** – Professional blue theme
-- 🔐 **JWT Authentication** – Secure token-based access
-- 💾 **SQLite DB** – Lightweight persistent storage
+- 🧠 **Orchestrator Agent** – Rule-based workflow coordinator with 8 sequential tasks.
+- 📊 **Real-time Tracking** – Live dashboard updates (2–5 sec auto-refresh).
+- 👥 **Dual Roles** – Separate HR and Manager interfaces.
+- 🔁 **Retry Management** – Managers can retry failed tasks (max 3 attempts).
+- 📝 **Full Logging** – All actions tracked with history.
+- 🎨 **Enterprise UI** – Professional blue theme.
+- 🔐 **JWT Authentication** – Secure token-based access.
+- 💾 **SQLite DB** – Lightweight persistent storage.
 
 ---
 
 ## 🔄 Workflow Flows
 
-### Onboarding Sequence Flow
-HR Login → Create Employee → Trigger Orchestrator
-↓
-Task 1: Account Creation
-↓
-Task 2: IT Asset Setup
-↓
-Task 3: HR Document Signing
-↓
-Task 4: Manager Introduction
-↓
-Task 5: Workspace Assignment
-↓
-Task 6: Training Enrollment
-↓
-Task 7: Policy Acknowledgment
-↓
-Task 8: Welcome Kit Dispatch
-↓
-✅ Onboarding Complete
+### 1. Onboarding Sequence Flow
+```mermaid
+graph TD
+    A[HR Login] --> B[Create Employee]
+    B --> C[Trigger Orchestrator]
+    C --> T1[Task 1: Account Creation]
+    T1 --> T2[Task 2: IT Asset Setup]
+    T2 --> T3[Task 3: HR Document Signing]
+    T3 --> T4[Task 4: Manager Introduction]
+    T4 --> T5[Task 5: Workspace Assignment]
+    T5 --> T6[Task 6: Training Enrollment]
+    T6 --> T7[Task 7: Policy Acknowledgment]
+    T7 --> T8[Task 8: Welcome Kit Dispatch]
+    T8 --> Z[✅ Onboarding Complete]
 
-text
+```
+### 2. Task Execution & Retry Flow
+```mermaid
+graph TD
+    A[Task Start] --> B[In Progress]
+    B --> C{Success?}
+    C -- Yes --> D[Next Task]
+    C -- No --> E[Mark Failed]
+    E --> F[Notify Manager]
+    F --> G[Manager Clicks Retry]
+    G --> H[Reset to Pending]
+    H --> B
 
-### Task Execution & Retry Flow
-Task Start → In Progress → Success? → YES → Next Task
-↓
-NO
-↓
-Mark Failed
-↓
-Notify Manager
-↓
-Manager Clicks Retry
-↓
-Reset to Pending
-↓
-Re-execute
-↓
-Back to Success?
+```
+### 3. User Role Flow
+```mermaid
+graph TD
+    A[User Login] --> B{Role Check}
+    B -- HR Role --> C[HR Capabilities]
+    B -- Manager Role --> D[Manager Capabilities]
+    
+    C --> C1[• Create Employee]
+    C --> C2[• View All Tasks]
+    C --> C3[• Full Log Access]
+    C --> C4[• Delete Employee]
+    
+    D --> D1[• View Team]
+    D --> D2[• Monitor Tasks]
+    D --> D3[• Retry Failed Tasks]
+    D --> D4[• View Task Details]
 
-text
-
-### User Role Flow
-User Login
-↓
-┌────────┴────────┐
-↓ ↓
-HR Role Manager Role
-↓ ↓
-• Create Employee • View Team
-• View All Tasks • Monitor Tasks
-• Full Log Access • Retry Failed Tasks
-• Delete Employee • View Task Details
-
-text
-
----
-
+```
 ## 💾 Database Schema (4 Tables)
-
 | Table | Key Fields |
-|-------|-------------|
+|---|---|
 | **Users** | id, username, password, role, created_at |
-| **Employees** | id, user_id(FK), name, email, department, status, created_at |
-| **Tasks** | id, employee_id(FK), task_name, status, retry_count, executed_at, error_msg |
-| **Logs** | id, employee_id(FK), action, timestamp, user_role |
-
----
-
+| **Employees** | id, user_id (FK), name, email, department, status, created_at |
+| **Tasks** | id, employee_id (FK), task_name, status, retry_count, executed_at, error_msg |
+| **Logs** | id, employee_id (FK), action, timestamp, user_role |
 ## 📋 Onboarding Tasks (8 Steps)
-
-1. **Account Creation** – Create user accounts (HR)
-2. **IT Asset Setup** – Configure laptop/software (IT)
-3. **HR Document Signing** – Complete contracts (HR)
-4. **Manager Introduction** – Meet team lead (Manager)
-5. **Workspace Assignment** – Assign desk/access (Facilities)
-6. **Training Enrollment** – Register for courses (HR)
-7. **Policy Acknowledgment** – Sign policies (HR)
-8. **Welcome Kit Dispatch** – Send swag bag (HR)
-
-**Status Flow:** `Pending → In Progress → Completed`  
-**Failure Flow:** `Failed → Retry (max 3) → Pending → In Progress → Completed`
-
----
-
-## 🛠️ Tech Stack (Bullet Points)
-
-**Backend**
-- Python 3.9+
-- FastAPI
-- SQLite
-- JWT
-- Uvicorn
-
-**Frontend**
-- HTML5
-- CSS3
-- JavaScript ES6
-- Fetch API
-- setInterval (2–5 sec polling)
-
----
-
+ 1. **Account Creation** – Create user accounts (HR)
+ 2. **IT Asset Setup** – Configure laptop/software (IT)
+ 3. **HR Document Signing** – Complete contracts (HR)
+ 4. **Manager Introduction** – Meet team lead (Manager)
+ 5. **Workspace Assignment** – Assign desk/access (Facilities)
+ 6. **Training Enrollment** – Register for courses (HR)
+ 7. **Policy Acknowledgment** – Sign policies (HR)
+ 8. **Welcome Kit Dispatch** – Send swag bag (HR)
+> 💡 **Status Flow:** Pending → In Progress → Completed
+> ⚠️ **Failure Flow:** Failed → Retry (max 3) → Pending → In Progress → Completed
+> 
+## 🛠️ Tech Stack
+### Backend
+ * **Python 3.9+**
+ * **FastAPI**
+ * **SQLite**
+ * **JWT**
+ * **Uvicorn**
+### Frontend
+ * **HTML5 / CSS3**
+ * **JavaScript (ES6+)**
+ * **Fetch API**
+ * **setInterval** (2–5 sec polling)
 ## 🚀 Installation (Step-by-Step)
-
+### Standard Installation
 ```bash
-git clone https://github.com/shansree-z/Orbit_V4.git
+# Clone the repository
+git clone [https://github.com/shansree-z/Orbit_V4.git](https://github.com/shansree-z/Orbit_V4.git)
 cd Orbit_V4
+
+# Create and activate virtual environment
 python -m venv venv
-venv\Scripts\activate      # Windows
-source venv/bin/activate   # Mac/Linux
+# On Windows:
+venv\Scripts\activate      
+# On Mac/Linux:
+source venv/bin/activate   
+
+# Install dependencies
 pip install -r requirements.txt
+
+# Initialize database and run the app
 python init_db.py
 uvicorn main:app --reload --port 8000
-Docker alternative:
 
-bash
+```
+### Docker Alternative
+```bash
 docker build -t orbit-v4 .
 docker run -p 8000:8000 orbit-v4
-📖 Usage
-Access URLs
 
-HR Dashboard → http://localhost:8000
-
-Manager Dashboard → http://localhost:8000/manager
-
-API Docs → http://localhost:8000/docs
-
-Default Logins
-
-Role	Username	Password
-HR	hr@orbit.com	hr123
-Manager	manager@orbit.com	mgr123
-Quick Start Steps
-
-Login with credentials
-
-HR creates new employee
-
-Orchestrator runs 8 tasks automatically
-
-Monitor real-time progress
-
-Manager retries failed tasks if needed
-
-Onboarding completes ✅
-
-📁 Project Structure (Compact)
-text
+```
+## 📖 Usage
+### Access URLs
+ * **HR Dashboard:** http://localhost:8000
+ * **Manager Dashboard:** http://localhost:8000/manager
+ * **API Documentation:** http://localhost:8000/docs
+### Default Credentials
+| Role | Username | Password |
+|---|---|---|
+| **HR** | hr@orbit.com | hr123 |
+| **Manager** | manager@orbit.com | mgr123 |
+### Quick Start Steps
+ 1. Login with your respective role credentials.
+ 2. **HR** creates a new employee profile.
+ 3. The **Orchestrator** runs the 8 tasks sequentially automatically.
+ 4. Monitor real-time progress via the live dashboard.
+ 5. **Managers** can intervene and retry failed tasks if any occur.
+ 6. System marks onboarding complete when all 8 tasks clear! ✅
+## 📁 Project Structure
+```text
 Orbit_V4/
 ├── backend/
 │   ├── orchestrator.py
@@ -189,52 +166,42 @@ Orbit_V4/
 ├── main.py
 ├── requirements.txt
 └── init_db.py
-🔐 API Endpoints
-Method	Endpoint	Auth	Role
-POST	/api/login	None	Anyone
-POST	/api/employees	JWT	HR only
-GET	/api/employees	JWT	HR/Manager
-GET	/api/employees/{id}/tasks	JWT	HR/Manager
-POST	/api/tasks/{id}/retry	JWT	Manager only
-GET	/api/logs	JWT	HR only
-📊 Logging System
-Captured Actions
 
-Task start/complete/fail
-
-Task retries
-
-Employee creation
-
-Status changes
-
-User logins
-
-Log Format
-
-text
+```
+## 🔐 API Endpoints
+| Method | Endpoint | Auth Required | Role Allowed |
+|---|---|---|---|
+| POST | /api/login | None | Anyone |
+| POST | /api/employees | JWT | HR only |
+| GET | /api/employees | JWT | HR / Manager |
+| GET | /api/employees/{id}/tasks | JWT | HR / Manager |
+| POST | /api/tasks/{id}/retry | JWT | Manager only |
+| GET | /api/logs | JWT | HR only |
+## 📊 Logging System
+### Captured Actions
+ * Task initiation / completion / failure states.
+ * Task retry actions.
+ * Employee profile creations.
+ * Workflow status changes.
+ * User authentication logins.
+### Log Format
+```text
 ID | Employee | Action | Timestamp | User Role
-⌨️ Keyboard Shortcuts
-Ctrl + Shift + M – Toggle tab focus mode
 
-Esc then Tab – Next interactive element
+```
+## ⌨️ Keyboard Shortcuts
+ * <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd> – Toggle tab focus mode.
+ * <kbd>Esc</kbd> then <kbd>Tab</kbd> – Shift to next interactive element.
+## 🤝 Contributing
+ 1. Fork the repository.
+ 2. Create your feature branch (git checkout -b feature/amazing).
+ 3. Commit your changes (git commit -m 'Add some amazing feature').
+ 4. Push to the branch (git push origin feature/amazing).
+ 5. Open a Pull Request.
+> **Code Style Standards:** PEP 8 (Python), ES6 (JavaScript), BEM (CSS).
+> 
+## 📄 License
+Distributed under the MIT License. © 2026 shansree-z.
+```
 
-🤝 Contributing
-Fork the repo
-
-git checkout -b feature/amazing
-
-Commit changes
-
-Push to branch
-
-Open Pull Request
-
-Code Style: PEP 8 (Python), ES6 (JS), BEM (CSS)
-
-📄 License
-MIT © 2026 shansree-z
-
-Tip: Use Ctrl + Shift + M to toggle tab key focus. Use Esc then Tab to move to next interactive element.
-
-
+```
