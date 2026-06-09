@@ -1,233 +1,240 @@
-🚀 New-Hire Onboarding Concierge(ORBIT_V4)
-FastAPI  |  SQLite  |  JWT Authentication
+New-Hire Onboarding Concierge (ORBIT V4)
 
+Tech Stack:
+FastAPI, SQLite, JWT Authentication
 
-📌 Overview
-A professional AI-powered employee onboarding management system with orchestrator agent coordination and real-time progress tracking.
+Overview
 
+ORBIT V4 is an AI-powered employee onboarding management system designed to automate and track the onboarding process. It uses an orchestrator agent to coordinate tasks and provides real-time progress monitoring.
 
-✨ Features
-🧠 Orchestrator Agent – Rule-based workflow coordinator with 8 sequential tasks
-📊 Real-time Tracking – Live dashboard updates (2–5 sec auto-refresh)
-👥 Dual Roles – Separate HR and Manager interfaces
-🔁 Retry Management – Managers can retry failed tasks (max 3 attempts)
-📝 Full Logging – All actions tracked with history
-🎨 Enterprise UI – Professional blue theme
-🔐 JWT Authentication – Secure token-based access
-💾 SQLite DB – Lightweight persistent storage
+Features
 
+- Orchestrator Agent with 8 sequential onboarding tasks
+- Real-time dashboard updates with auto-refresh
+- Separate HR and Manager interfaces
+- Retry mechanism for failed tasks (maximum 3 attempts)
+- Complete action logging and history tracking
+- Professional enterprise-style user interface
+- JWT-based authentication
+- SQLite database for persistent storage
 
+Workflow
 
+HR Login → Create Employee → Start Onboarding
 
-🔄 Workflow Flows
-Onboarding Sequence Flow
-HR Login → Create Employee → Trigger Orchestrator
-↓  Task 1: Account Creation
-↓  Task 2: IT Asset Setup
-↓  Task 3: HR Document Signing
-↓  Task 4: Manager Introduction
-↓  Task 5: Workspace Assignment
-↓  Task 6: Training Enrollment
-↓  Task 7: Policy Acknowledgment
-↓  Task 8: Welcome Kit Dispatch
-↓  ✅ Onboarding Complete
+1. Account Creation
+2. IT Asset Setup
+3. HR Document Signing
+4. Manager Introduction
+5. Workspace Assignment
+6. Training Enrollment
+7. Policy Acknowledgment
+8. Welcome Kit Dispatch
 
-Task Execution & Retry Flow
-Task Start → In Progress → Success? → YES → Next Task
-                                 ↓ NO
-                           Mark Failed → Notify Manager
-                      Manager Clicks Retry → Reset to Pending
-                         Re-execute → Back to Success?
+Onboarding Status:
+Pending → In Progress → Completed
 
-User Role Flow
-HR Role
-Manager Role
-Create Employee
-View Team
-View All Tasks
-Monitor Tasks
-Full Log Access
-Retry Failed Tasks
-Delete Employee
-View Task Details
+Failure Handling:
+Failed → Retry → Pending → In Progress → Completed
 
+User Roles
 
+HR:
 
+- Create employees
+- View all tasks
+- Access logs
+- Delete employees
 
+Manager:
 
-💾 Database Schema (4 Tables)
-Table
-Key Fields
-Users
-id, username, password, role, created_at
-Employees
-id, user_id(FK), name, email, department, status, created_at
-Tasks
-id, employee_id(FK), task_name, status, retry_count, executed_at, error_msg
-Logs
-id, employee_id(FK), action, timestamp, user_role
+- View team members
+- Monitor onboarding tasks
+- Retry failed tasks
+- View task details
 
+Database Schema
 
+Users:
 
+- id
+- username
+- password
+- role
+- created_at
 
+Employees:
 
-📋 Onboarding Tasks (8 Steps)
-Account Creation – Create user accounts (HR)
-IT Asset Setup – Configure laptop/software (IT)
-HR Document Signing – Complete contracts (HR)
-Manager Introduction – Meet team lead (Manager)
-Workspace Assignment – Assign desk/access (Facilities)
-Training Enrollment – Register for courses (HR)
-Policy Acknowledgment – Sign policies (HR)
-Welcome Kit Dispatch – Send swag bag (HR)
+- id
+- user_id
+- name
+- email
+- department
+- status
+- created_at
 
-Status Flow: Pending → In Progress → Completed
-Failure Flow: Failed → Retry (max 3) → Pending → In Progress → Completed
+Tasks:
 
+- id
+- employee_id
+- task_name
+- status
+- retry_count
+- executed_at
+- error_msg
 
+Logs:
 
+- id
+- employee_id
+- action
+- timestamp
+- user_role
 
-🛠️ Tech Stack
-Backend
-Python 3.9+
-FastAPI
-SQLite
-JWT
-Uvicorn
+Onboarding Tasks
 
-Frontend
-HTML5
-CSS3
-JavaScript ES6
-Fetch API
-setInterval (2–5 sec polling)
+1. Account Creation
+2. IT Asset Setup
+3. HR Document Signing
+4. Manager Introduction
+5. Workspace Assignment
+6. Training Enrollment
+7. Policy Acknowledgment
+8. Welcome Kit Dispatch
 
+Technology Stack
 
+Backend:
 
+- Python 3.9+
+- FastAPI
+- SQLite
+- JWT
+- Uvicorn
 
-🚀 Installation
+Frontend:
+
+- HTML5
+- CSS3
+- JavaScript (ES6)
+- Fetch API
+- Auto polling using setInterval
+
+Installation
+
 git clone https://github.com/shansree-z/Orbit_V4.git
+
 cd Orbit_V4
+
 python -m venv venv
-venv\Scripts\activate      # Windows
-source venv/bin/activate   # Mac/Linux
+
+Windows:
+venv\Scripts\activate
+
+Mac/Linux:
+source venv/bin/activate
+
 pip install -r requirements.txt
+
 python init_db.py
+
 uvicorn main:app --reload --port 8000
 
-Docker Alternative
+Docker
+
 docker build -t orbit-v4 .
+
 docker run -p 8000:8000 orbit-v4
 
+Application URLs
 
+HR Dashboard:
+http://localhost:8000
 
+Manager Dashboard:
+http://localhost:8000/manager
 
-📖 Usage
-Access URLs
-HR Dashboard → http://localhost:8000
-Manager Dashboard → http://localhost:8000/manager
-API Docs → http://localhost:8000/docs
+API Documentation:
+http://localhost:8000/docs
 
-Default Logins
-Role
-Username
-Password
-HR
-hr@orbit.com
-hr123
-Manager
-manager@orbit.com
-mgr123
+Default Credentials
 
+HR:
+Username: hr@orbit.com
+Password: hr123
 
-Quick Start Steps
-Login with credentials
-HR creates new employee
-Orchestrator runs 8 tasks automatically
-Monitor real-time progress
-Manager retries failed tasks if needed
-Onboarding completes ✅
+Manager:
+Username: manager@orbit.com
+Password: mgr123
 
+Quick Start
 
+1. Login using the provided credentials.
+2. Create a new employee.
+3. Start the onboarding workflow.
+4. Monitor task progress in real time.
+5. Retry failed tasks if required.
+6. Complete the onboarding process.
 
+Project Structure
 
-📁 Project Structure
 Orbit_V4/
-├── backend/
-│   ├── orchestrator.py
-│   ├── database.py
-│   ├── auth.py
-│   └── tasks.py
-├── frontend/
-│   ├── index.html
-│   ├── manager.html
-│   └── styles.css
-├── main.py
-├── requirements.txt
-└── init_db.py
+backend/
 
+- orchestrator.py
+- database.py
+- auth.py
+- tasks.py
 
+frontend/
 
+- index.html
+- manager.html
+- styles.css
 
-🔐 API Endpoints
-Method
-Endpoint
-Auth
-Role
-POST
-/api/login
-None
-Anyone
-POST
-/api/employees
-JWT
-HR only
-GET
-/api/employees
-JWT
-HR/Manager
-GET
-/api/employees/{id}/tasks
-JWT
-HR/Manager
-POST
-/api/tasks/{id}/retry
-JWT
-Manager only
-GET
-/api/logs
-JWT
-HR only
+main.py
+requirements.txt
+init_db.py
 
+API Endpoints
 
+POST /api/login
 
+POST /api/employees
 
+GET /api/employees
 
-📊 Logging System
-Captured Actions
-Task start / complete / fail
-Task retries
-Employee creation
-Status changes
-User logins
+GET /api/employees/{id}/tasks
 
-Log Format
-ID | Employee | Action | Timestamp | User Role
+POST /api/tasks/{id}/retry
 
+GET /api/logs
 
+Logging
 
+The system records:
 
-🤝 Contributing
-Fork the repo
-git checkout -b feature/amazing
-Commit changes
-Push to branch
-Open Pull Request
+- User logins
+- Employee creation
+- Task execution events
+- Task failures
+- Task retries
+- Status updates
 
-Code Style: PEP 8 (Python), ES6 (JS), BEM (CSS)
+Contributing
 
+1. Fork the repository.
+2. Create a feature branch.
+3. Commit your changes.
+4. Push to your branch.
+5. Submit a Pull Request.
 
+Coding Standards
 
+- Python: PEP 8
+- JavaScript: ES6
+- CSS: BEM methodology
 
-📄 License
-MIT © 2026 shansree-z
+License
+
+MIT License © 2026 shansree-z
