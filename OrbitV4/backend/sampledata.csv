@@ -1,6 +1,0 @@
-EmployeeID,FirstName,LastName,Email,Department,JobTitle,StartDate,Manager,OnboardingStatus
-E001,Ananya,Rao,ananya.rao@example.com,Engineering,Software Engineer,2026-06-01,Rajesh Kumar,Pending
-E002,Vikram,Patel,vikram.patel@example.com,HR,HR Coordinator,2026-06-03,Meena Sharma,In Progress
-E003,Divya,Menon,divya.menon@example.com,Finance,Accounts Analyst,2026-06-05,Arun Nair,Completed
-E004,Karthik,Iyer,karthik.iyer@example.com,Marketing,Digital Marketing Associate,2026-06-07,Sunita Joshi,Pending
-E005,Pooja,Shah,pooja.shah@example.com,Sales,Sales Executive,2026-06-09,Amit Verma,In Progress
