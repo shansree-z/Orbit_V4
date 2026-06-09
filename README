@@ -1,347 +1,240 @@
 # 🚀 New-Hire Onboarding Concierge
 
-<p align="center">
-  <img src="https://via.placeholder.com/1200x350/0A66C2/FFFFFF?text=New-Hire+Onboarding+Concierge" alt="Project Banner" width="100%">
-</p>
-
-<p align="center">
-  <strong>AI-Powered Employee Onboarding Management System</strong><br>
-  Streamlining employee onboarding with intelligent orchestration, real-time tracking, and role-based collaboration.
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white">
-  <img src="https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white">
-  <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white">
-  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
-  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
-</p>
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
 
 ---
 
-# 📋 Overview
+## 📌 Overview
 
-**New-Hire Onboarding Concierge** is an enterprise-grade onboarding management platform designed to automate and monitor employee onboarding processes.
-
-The system utilizes a **rule-based orchestrator agent** to coordinate onboarding workflows, track progress in real time, and provide seamless collaboration between HR teams and managers.
+A professional AI-powered employee onboarding management system with orchestrator agent coordination and real-time progress tracking.
 
 ---
 
-# ✨ Key Features
+## ✨ Features
 
-## 🎯 Intelligent Orchestration
-
-* Rule-based workflow coordination
-* Sequential onboarding execution
-* Automated task progression
-* Failure detection and recovery
-
-## 📊 Real-Time Progress Tracking
-
-* Live onboarding dashboard
-* Task status monitoring
-* Progress percentage tracking
-* Instant workflow visibility
-
-## 👥 Dual Role Access
-
-### HR Dashboard
-
-* Add new employees
-* Initiate onboarding
-* Monitor progress
-* Review onboarding history
-
-### Manager Dashboard
-
-* Track assigned tasks
-* Retry failed activities
-* Review employee status
-* Access execution logs
-
-## 🔄 Task Retry Management
-
-* Retry failed onboarding tasks
-* Error handling mechanisms
-* Recovery workflow support
-
-## 📜 Comprehensive Logging
-
-* Activity tracking
-* Audit trail maintenance
-* Execution history storage
-* Workflow transparency
-
-## 🔐 Secure Authentication
-
-* JWT-based authentication
-* Role-based access control
-* Protected API endpoints
+- 🧠 **Orchestrator Agent** – Rule-based workflow coordinator with 8 sequential tasks
+- 📊 **Real-time Tracking** – Live dashboard updates (2–5 sec auto-refresh)
+- 👥 **Dual Roles** – Separate HR and Manager interfaces
+- 🔁 **Retry Management** – Managers can retry failed tasks (max 3 attempts)
+- 📝 **Full Logging** – All actions tracked with history
+- 🎨 **Enterprise UI** – Professional blue theme
+- 🔐 **JWT Authentication** – Secure token-based access
+- 💾 **SQLite DB** – Lightweight persistent storage
 
 ---
 
-# 🏗️ System Architecture
+## 🔄 Workflow Flows
 
-<p align="center">
-  <img src="https://via.placeholder.com/1000x400/F5F7FA/0A66C2?text=System+Architecture" alt="Architecture Diagram" width="100%">
-</p>
+### Onboarding Sequence Flow
+HR Login → Create Employee → Trigger Orchestrator
+↓
+Task 1: Account Creation
+↓
+Task 2: IT Asset Setup
+↓
+Task 3: HR Document Signing
+↓
+Task 4: Manager Introduction
+↓
+Task 5: Workspace Assignment
+↓
+Task 6: Training Enrollment
+↓
+Task 7: Policy Acknowledgment
+↓
+Task 8: Welcome Kit Dispatch
+↓
+✅ Onboarding Complete
 
-## Backend Stack
+text
 
-| Technology         | Purpose                        |
-| ------------------ | ------------------------------ |
-| FastAPI            | REST API Framework             |
-| SQLite             | Persistent Data Storage        |
-| JWT                | Authentication & Authorization |
-| Python             | Business Logic                 |
-| Orchestrator Agent | Workflow Management            |
+### Task Execution & Retry Flow
+Task Start → In Progress → Success? → YES → Next Task
+↓
+NO
+↓
+Mark Failed
+↓
+Notify Manager
+↓
+Manager Clicks Retry
+↓
+Reset to Pending
+↓
+Re-execute
+↓
+Back to Success?
 
-### Backend Components
+text
 
-* Employee Management Service
-* Onboarding Workflow Engine
-* Authentication Service
-* Logging Service
-* Task Execution Service
+### User Role Flow
+User Login
+↓
+┌────────┴────────┐
+↓ ↓
+HR Role Manager Role
+↓ ↓
+• Create Employee • View Team
+• View All Tasks • Monitor Tasks
+• Full Log Access • Retry Failed Tasks
+• Delete Employee • View Task Details
 
----
-
-## Frontend Stack
-
-| Technology        | Purpose              |
-| ----------------- | -------------------- |
-| HTML5             | UI Structure         |
-| CSS3              | Styling              |
-| JavaScript        | Client Logic         |
-| Responsive Design | Multi-device Support |
-
-### Frontend Features
-
-* Enterprise Dashboard
-* Real-Time Updates
-* Interactive Workflow Tracking
-* Mobile Responsive Layout
-
----
-
-# 🗄️ Database Schema
-
-## Employees
-
-Stores employee onboarding information.
-
-| Field  | Description         |
-| ------ | ------------------- |
-| id     | Employee Identifier |
-| name   | Employee Name       |
-| email  | Employee Email      |
-| status | Onboarding Status   |
-
----
-
-## Tasks
-
-Tracks onboarding task execution.
-
-| Field       | Description         |
-| ----------- | ------------------- |
-| id          | Task Identifier     |
-| employee_id | Associated Employee |
-| task_name   | Task Description    |
-| status      | Execution Status    |
+text
 
 ---
 
-## Logs
+## 💾 Database Schema (4 Tables)
 
-Maintains complete activity history.
-
-| Field     | Description      |
-| --------- | ---------------- |
-| id        | Log Identifier   |
-| action    | Performed Action |
-| timestamp | Event Time       |
-
----
-
-## Users
-
-Stores authentication credentials.
-
-| Field         | Description        |
-| ------------- | ------------------ |
-| id            | User Identifier    |
-| username      | Login Username     |
-| role          | HR / Manager       |
-| password_hash | Encrypted Password |
+| Table | Key Fields |
+|-------|-------------|
+| **Users** | id, username, password, role, created_at |
+| **Employees** | id, user_id(FK), name, email, department, status, created_at |
+| **Tasks** | id, employee_id(FK), task_name, status, retry_count, executed_at, error_msg |
+| **Logs** | id, employee_id(FK), action, timestamp, user_role |
 
 ---
 
-# ⚙️ Onboarding Workflow
+## 📋 Onboarding Tasks (8 Steps)
 
-The onboarding process consists of **8 sequential tasks** coordinated by the Orchestrator Agent.
+1. **Account Creation** – Create user accounts (HR)
+2. **IT Asset Setup** – Configure laptop/software (IT)
+3. **HR Document Signing** – Complete contracts (HR)
+4. **Manager Introduction** – Meet team lead (Manager)
+5. **Workspace Assignment** – Assign desk/access (Facilities)
+6. **Training Enrollment** – Register for courses (HR)
+7. **Policy Acknowledgment** – Sign policies (HR)
+8. **Welcome Kit Dispatch** – Send swag bag (HR)
 
-```text
-1. Employee Registration
-        ↓
-2. Document Collection
-        ↓
-3. Identity Verification
-        ↓
-4. IT Asset Allocation
-        ↓
-5. Email Account Creation
-        ↓
-6. System Access Provisioning
-        ↓
-7. Manager Approval
-        ↓
-8. Onboarding Completion
-```
+**Status Flow:** `Pending → In Progress → Completed`  
+**Failure Flow:** `Failed → Retry (max 3) → Pending → In Progress → Completed`
 
 ---
 
-# 🚀 Installation
+## 🛠️ Tech Stack (Bullet Points)
 
-## Clone Repository
+**Backend**
+- Python 3.9+
+- FastAPI
+- SQLite
+- JWT
+- Uvicorn
+
+**Frontend**
+- HTML5
+- CSS3
+- JavaScript ES6
+- Fetch API
+- setInterval (2–5 sec polling)
+
+---
+
+## 🚀 Installation (Step-by-Step)
 
 ```bash
-git clone https://github.com/your-username/New-Hire-Onboarding-Concierge.git
-
-cd New-Hire-Onboarding-Concierge
-```
-
-## Create Virtual Environment
-
-```bash
+git clone https://github.com/shansree-z/Orbit_V4.git
+cd Orbit_V4
 python -m venv venv
-```
-
-### Windows
-
-```bash
-venv\Scripts\activate
-```
-
-### Linux / macOS
-
-```bash
-source venv/bin/activate
-```
-
-## Install Dependencies
-
-```bash
+venv\Scripts\activate      # Windows
+source venv/bin/activate   # Mac/Linux
 pip install -r requirements.txt
-```
+python init_db.py
+uvicorn main:app --reload --port 8000
+Docker alternative:
 
-## Run Backend
+bash
+docker build -t orbit-v4 .
+docker run -p 8000:8000 orbit-v4
+📖 Usage
+Access URLs
 
-```bash
-uvicorn main:app --reload
-```
+HR Dashboard → http://localhost:8000
 
-## Access Application
+Manager Dashboard → http://localhost:8000/manager
 
-```text
-Frontend:
-http://localhost:8000
+API Docs → http://localhost:8000/docs
 
-API Docs:
-http://localhost:8000/docs
-```
+Default Logins
 
----
+Role	Username	Password
+HR	hr@orbit.com	hr123
+Manager	manager@orbit.com	mgr123
+Quick Start Steps
 
-# 📈 Workflow Monitoring
+Login with credentials
 
-### Real-Time Dashboard
+HR creates new employee
 
-✔ Employee Status Tracking
+Orchestrator runs 8 tasks automatically
 
-✔ Task Progress Monitoring
+Monitor real-time progress
 
-✔ Failure Detection
+Manager retries failed tasks if needed
 
-✔ Retry Actions
+Onboarding completes ✅
 
-✔ Execution History
+📁 Project Structure (Compact)
+text
+Orbit_V4/
+├── backend/
+│   ├── orchestrator.py
+│   ├── database.py
+│   ├── auth.py
+│   └── tasks.py
+├── frontend/
+│   ├── index.html
+│   ├── manager.html
+│   └── styles.css
+├── main.py
+├── requirements.txt
+└── init_db.py
+🔐 API Endpoints
+Method	Endpoint	Auth	Role
+POST	/api/login	None	Anyone
+POST	/api/employees	JWT	HR only
+GET	/api/employees	JWT	HR/Manager
+GET	/api/employees/{id}/tasks	JWT	HR/Manager
+POST	/api/tasks/{id}/retry	JWT	Manager only
+GET	/api/logs	JWT	HR only
+📊 Logging System
+Captured Actions
 
-✔ Live Updates Every 2–5 Seconds
+Task start/complete/fail
 
----
+Task retries
 
-# 🔒 Security Features
+Employee creation
 
-* JWT Authentication
-* Protected Endpoints
-* Role-Based Access Control
-* Secure Session Management
-* Credential Encryption
+Status changes
 
----
+User logins
 
-# 🎨 UI Highlights
+Log Format
 
-* Enterprise Blue Theme
-* Professional Dashboard Design
-* Responsive Layout
-* Modern Card Components
-* Progress Visualization
-* Interactive Status Indicators
+text
+ID | Employee | Action | Timestamp | User Role
+⌨️ Keyboard Shortcuts
+Ctrl + Shift + M – Toggle tab focus mode
 
----
+Esc then Tab – Next interactive element
 
-# 📸 Screenshots
+🤝 Contributing
+Fork the repo
 
-### HR Dashboard
+git checkout -b feature/amazing
 
-Add screenshot here:
+Commit changes
 
-```markdown
-![HR Dashboard](images/hr-dashboard.png)
-```
+Push to branch
 
-### Manager Dashboard
+Open Pull Request
 
-```markdown
-![Manager Dashboard](images/manager-dashboard.png)
-```
+Code Style: PEP 8 (Python), ES6 (JS), BEM (CSS)
 
-### Workflow Tracking
+📄 License
+MIT © 2026 shansree-z
 
-```markdown
-![Workflow Tracking](images/workflow.png)
-```
+Tip: Use Ctrl + Shift + M to toggle tab key focus. Use Esc then Tab to move to next interactive element.
 
----
 
-# 🤝 Future Enhancements
-
-* AI-Based Decision Engine
-* Email Notifications
-* Employee Self-Service Portal
-* Multi-Tenant Support
-* PostgreSQL Integration
-* Cloud Deployment
-* Analytics Dashboard
-
----
-
-# 👨‍💻 Developed By
-
-**Shansree-Z**
-
-Enterprise AI Workflow & Automation Project
-
----
-
-# 📄 License
-
-This project is licensed under the MIT License.
-
----
-
-<p align="center">
-⭐ If you found this project useful, consider giving it a star on GitHub.
-</p>
