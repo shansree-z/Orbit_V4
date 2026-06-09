@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Monitoring - Onboarding Concierge</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="/manager-monitoring.html" class="navbar-brand">🚀 Onboarding Concierge</a>
+            <div class="navbar-menu">
+                <a href="/manager-monitoring.html">Monitoring Dashboard</a>
+            </div>
+            <div class="navbar-user">
+                <div>
+                    <div style="font-size: 12px; color: var(--light-text);">Logged in as</div>
+                    <div style="font-weight: 600;" id="user-email"></div>
+                    <div style="font-size: 11px; color: var(--light-text);" id="user-role"></div>
+                </div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="page-container">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Manager Dashboard</h1>
+                <p class="page-subtitle">Monitor employee onboarding progress and manage failed tasks</p>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="card mb-30">
+                <div class="filter-container">
+                    <div class="filter-group">
+                        <label>Search by Name or Email:</label>
+                        <div class="search-box" style="min-width: 250px;">
+                            <input 
+                                type="text" 
+                                id="search-input" 
+                                placeholder="Search..."
+                                onkeyup="filterEmployees()"
+                            >
+                            <span class="search-icon">🔍</span>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label>Filter by Status:</label>
+                        <select id="status-filter" onchange="filterEmployees()">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="onboarding">Onboarding</option>
+                            <option value="completed">Completed</option>
+                            <option value="failed">Failed</option>
+                            <option value="partial">Partial</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <button class="btn btn-primary" onclick="loadOnboardingList()">Refresh</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Employee Onboarding List -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Employee Onboarding Status</h2>
+                </div>
+                <div class="table-container" id="employees-list-container">
+                    <div class="spinner-center"><div class="spinner"></div></div>
+                </div>
+            </div>
+
+            <!-- Failed Tasks Summary -->
+            <div class="card mt-20" id="failed-tasks-container">
+                <div class="card-header">
+                    <h2 class="card-title">Failed Tasks Summary</h2>
+                </div>
+                <div id="failed-tasks-content">
+                    <div style="padding: 20px; text-align: center; color: var(--light-text);">Loading...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/api.js"></script>
+    <script>
+        function logout() {
+            clearSession();
+        }
+
+        let allEmployees = [];
+
+        async function loadOnboardingList() {
+            try {
+                const data = await dashboardAPI.getOnboardingList();
+                allEmployees = data.employees;
+                
+                displayEmployeeList(allEmployees);
+                displayFailedTasksSummary(data.employees);
+            } catch (error) {
+                showAlert('Error loading employee list: ' + error.message, 'error');
+                console.error('Error:', error);
+            }
+        }
+
+        function displayEmployeeList(employees) {
+            if (employees.length === 0) {
+                document.getElementById('employees-list-container').innerHTML = 
+                    '<div style="padding: 40px; text-align: center; color: var(--light-text);">No employees found</div>';
+                return;
+            }
+
+            const tableHtml = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Employee ID</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Status</th>
+                            <th>Progress</th>
+                            <th>Tasks</th>
+                            <th>Failed</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${employees.map(emp => `
+                            <tr>
+                                <td><strong>${emp.employee_id}</strong></td>
+                                <td>${emp.name}</td>
+                                <td>${emp.department}</td>
+                                <td>${getStatusBadge(emp.onboarding_status)}</td>
+                                <td>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: ${emp.progress}%; background-color: ${getProgressColor(emp.progress)};">
+                                            ${emp.progress > 15 ? emp.progress + '%' : ''}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <strong style="color: var(--success-color);">${emp.completed_tasks}</strong>/${emp.total_tasks}
+                                </td>
+                                <td>
+                                    ${emp.failed_tasks > 0 ? 
+                                        `<strong style="color: var(--danger-color);">${emp.failed_tasks}</strong>` :
+                                        '<span style="color: var(--success-color);">—</span>'
+                                    }
+                                </td>
+                                <td>
+                                    <a href="/employee-status.html?id=${emp.employee_id}" class="btn btn-sm btn-primary">View Details</a>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('employees-list-container').innerHTML = tableHtml;
+        }
+
+        function displayFailedTasksSummary(employees) {
+            const failedTasks = [];
+
+            employees.forEach(emp => {
+                if (emp.failed_tasks > 0) {
+                    failedTasks.push({
+                        employeeId: emp.employee_id,
+                        employeeName: emp.name,
+                        failedCount: emp.failed_tasks,
+                        progress: emp.progress
+                    });
+                }
+            });
+
+            const failedTasksHtml = failedTasks.length > 0
+                ? `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>ID</th>
+                                <th>Failed Tasks</th>
+                                <th>Current Progress</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${failedTasks.map(item => `
+                                <tr style="background-color: #fee2e2;">
+                                    <td>${item.employeeName}</td>
+                                    <td><strong>${item.employeeId}</strong></td>
+                                    <td>
+                                        <strong style="color: var(--danger-color);">${item.failedCount}</strong>
+                                    </td>
+                                    <td>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: ${item.progress}%;">
+                                                ${item.progress}%
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="/employee-status.html?id=${item.employeeId}" class="btn btn-sm btn-warning">Retry Failed Tasks</a>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `
+                : '<div style="padding: 40px; text-align: center; color: var(--success-color); font-weight: 600;">✓ No failed tasks - All onboarding processes are progressing well!</div>';
+
+            document.getElementById('failed-tasks-content').innerHTML = failedTasksHtml;
+        }
+
+        function filterEmployees() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const statusFilter = document.getElementById('status-filter').value;
+
+            const filtered = allEmployees.filter(emp => {
+                const matchesSearch = emp.name.toLowerCase().includes(searchTerm) || 
+                                    emp.email.toLowerCase().includes(searchTerm) ||
+                                    emp.employee_id.toLowerCase().includes(searchTerm);
+                const matchesStatus = !statusFilter || emp.onboarding_status === statusFilter;
+                
+                return matchesSearch && matchesStatus;
+            });
+
+            displayEmployeeList(filtered);
+        }
+
+        function getProgressColor(progress) {
+            if (progress === 100) return 'var(--success-color)';
+            if (progress >= 50) return 'var(--warning-color)';
+            if (progress > 0) return 'var(--info-color)';
+            return 'var(--border-color)';
+        }
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeNavbar();
+            loadOnboardingList();
+            
+            // Auto-refresh every 5 seconds
+            setInterval(loadOnboardingList, 5000);
+        });
+    </script>
+</body>
+</html>
